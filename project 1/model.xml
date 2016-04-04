@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<bookshop>
+
+    <departmentScientific type="scientific">
+        <book type="scientific" title="" ISBN="">
+            <year />
+            <publihser />
+            <editors>
+                <editor />
+            </editors>
+            <authors>
+                <author />
+            </authors>
+            <abstract />
+            <edition />
+        </book>
+        
+        <journal title="">
+            <year />
+            <volume />
+            <number />
+            <editors>
+                <editor />
+            </editors>
+            <authors>
+                <author />
+            </authors>
+            <publihser />
+            <impact-factor>
+                <value />
+                <year />
+            </impact-factor>
+            <articles>
+                <article title="">
+                    <authors>
+                        <author />
+                    </authors>
+                    <start-page></start-page>
+                    <end-page></end-page>
+                    <number></number>
+                </article>
+            </articles>
+        </journal>
+             
+    </departmentScientific>
+
+    <departmentLeisure type="leisure">
+        <book type="leisure" title="" genre="">
+            <year />
+            <edition />
+            <authors>
+                <author />
+            </authors>
+            <publihser />
+            <number-page></number-page>
+        </book>
+        <periodical title="">
+            <price></price>
+            <publihser />
+        </periodical>
+    </departmentLeisure>
+
+</bookshop>

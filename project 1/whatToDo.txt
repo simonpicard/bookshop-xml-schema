@@ -1,0 +1,44 @@
+Scientific Products
+    Scientific books
+        title
+        list of authors XOR list of editors
+        Publisher
+        Year of publication
+        OPTIONAL
+            abstract
+            edition
+            ISBN
+    Scientific journals
+        title
+        volume
+        number
+        list of authors XOR list of editors
+        year of publication
+        OPTIONAL
+            publisher
+            impact factor
+                year in which is valid
+        
+        FOR EACH journal
+            all articles
+                title
+                list of authors
+                (start page AND end page) XOR article number
+                
+Leisure products
+    leisure books
+        title
+        list of authors
+        publisher
+        year of publication
+        genre {thriller, horror, sci/fi, romance, literature}
+        OPTIONAL
+            edition
+            number of page
+    
+    leisure periodicals
+        title
+        price
+        publisher
+                
+            

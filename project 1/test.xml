@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<bookshop>
+
+    <departmentScientific type="scientific">
+        <book type="scientific" title="Master Thesis" ISBN="1234-6541">
+            <year> 2016 </year>
+            <publisher> "ULB" </publisher>
+            <authors>
+                <author> "Simon Picard" </author>
+                <author> "Marc Alfred" </author>
+            </authors>
+            <abstract> "Un mémoire..." </abstract>
+            <edition> "Edition numéro 1" </edition>
+        </book>
+        
+        <journal title="xcd">
+            <year>1995 </year>
+            <volume>3 </volume>
+            <number>1 </number>
+            <editors>
+                <editor>"Gallimard"</editor>
+            </editors>
+            <publisher>"La maison de la plume"</publisher>
+            <impact-factor>
+                <value>6 </value>
+                <year>1996 </year>
+            </impact-factor>
+            <articles>
+                <article title="un article">
+                    <authors>
+                        <author>"Jean Marsouin"</author>
+                    </authors>
+                    <start-page>1</start-page>
+                    <end-page>8</end-page>
+                </article>
+                <article title="un deuxieme article">
+                    <authors>
+                        <author>"Paul Eustache"</author>
+                    </authors>
+                    <number>8 </number>
+                </article>
+            </articles>
+        </journal>
+             
+    </departmentScientific>
+
+    <departmentLeisure type="leisure">
+        <book type="leisure" title="Harry Potter" genre="sci/fi">
+            <year>2001</year>
+            <edition>"deuxiemme edition"</edition>
+            <authors>
+                <author>"J K Rowlling"</author>
+            </authors>
+            <publisher>"Gallimard jeunesse" </publisher>
+            <number-page>423</number-page>
+        </book>
+        <periodical title="Science et vie junior">
+            <price>8</price>
+            <publisher>"SCV publishing "</publisher>
+        </periodical>
+    </departmentLeisure>
+
+</bookshop>
