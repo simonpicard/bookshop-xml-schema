@@ -1,20 +1,71 @@
 <?xml version="1.1" encoding="utf-8" ?>
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.bookshop.com"
+	xmlns:b="http://www.bookshop.com">
     
+    
+    <xs:complexType name="basic_paper_type">
+        <!-- ATTRIBUT -->
+        <xs:attribute name="title" type="xs:string" use="required" />
+    </xs:complexType>
+    
+    <!-- SCIENTIFIC TYPES -->
+    
+    
+    <xs:complexType name = "scientific_paper_type">
+        <xs:complexContent>
+            <xs:extension base = "b:basic_paper_type">
+                <!-- ELEMENT -->
+                <xs:sequence>
+                    <xs:element name="year" type="xs:positiveInteger" />
+                    <xs:choice>
+                        <xs:element name="authors" type="b:authorsType">
+                            <xs:unique name="author_unique_scientific_paper">
+                                <xs:selector xpath="author" />
+                                <xs:field xpath="." />
+                            </xs:unique>
+                        </xs:element>
+                        <xs:element name="editors" type="b:editorsType">
+                            <xs:unique name="editor_unique_scientific_paper">
+                                <xs:selector xpath="editor" />
+                                <xs:field xpath="." />
+                            </xs:unique>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
     
     <xs:complexType name="authorsType">
+        <!-- ELEMENT -->
         <xs:sequence>
             <xs:element minOccurs="1" maxOccurs="unbounded" name="author" type="xs:string" />
         </xs:sequence>
     </xs:complexType>
     
+    <xs:complexType name="editorsType">
+        <!-- ELEMENT -->
+        <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="unbounded" name="editor" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    
     <xs:complexType name="articlesType">
+        <!-- ELEMENT -->
         <xs:sequence>
             <xs:element name="article" maxOccurs="unbounded">
                 <xs:complexType>
+                
+                    <!-- ELEMENT -->
                     <xs:sequence>
-                        <xs:element name="authors" type="authorsType" />
+                        <xs:element name="authors" type="b:authorsType" >
+                            <xs:unique name="author_unique_article">
+                                <xs:selector xpath="author" />
+                                <xs:field xpath="." />
+                            </xs:unique>
+                        </xs:element>
                         <xs:choice>
                             <xs:element name="number" type="xs:positiveInteger" />
                             <xs:sequence>
@@ -23,125 +74,185 @@
                             </xs:sequence>
                         </xs:choice>
                     </xs:sequence>
+                    
+                    <!-- ATTRIBUT -->
                     <xs:attribute name="title" type="xs:string" use="required" />
+                    
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
     
-    <xs:complexType name="editorsType">
-        <xs:sequence>
-            <xs:element minOccurs="1" maxOccurs="unbounded" name="editor" type="xs:string" />
-        </xs:sequence>
-    </xs:complexType>
     
 	<xs:complexType name="scientificBook">
-		<xs:sequence>
-			<xs:element name="year" type="xs:positiveInteger" />
+        <xs:complexContent>
+            <xs:extension base = "b:scientific_paper_type">
             
-			<xs:element name="publisher" type="xs:string" />
-            
-            <xs:choice>
-                <xs:element name="authors" type="authorsType" />
-                <xs:element name="editors" type="editorsType"/>
-            </xs:choice>
-            
-			<xs:element minOccurs="0" name="abstract" type="xs:string" />
-            
-			<xs:element minOccurs="0" name="edition" type="xs:string" />
-		</xs:sequence>
-        <xs:attribute name="type" type="xs:string" fixed="scientific"/>
-        <xs:attribute name="title" type="xs:string" use="required" />
-        <xs:attribute name="ISBN" type="xs:string"/>
+                <!-- ELEMENT -->
+                <xs:sequence>
+                    <xs:element name="publisher" type="xs:string" />
+                    <xs:element minOccurs="0" name="abstract" type="xs:string" />
+                    <xs:element minOccurs="0" name="edition" type="xs:string" />
+                </xs:sequence>
+                
+                <!-- ATTRIBUT -->
+                <xs:attribute name="type" type="xs:string" fixed="scientific"/>
+                <xs:attribute name="ISBN">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="97(8|9)-[0-9]*-[0-9]*-[0-9]*-[0-9]"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                
+            </xs:extension>
+        </xs:complexContent>
 	</xs:complexType>
     
 	<xs:complexType name="scientificJournal">
-		<xs:sequence>
+        <xs:complexContent>
+            <xs:extension base = "b:scientific_paper_type">
+                <!-- ELEMENT -->
+                <xs:sequence>
+                    <xs:element name="volume" type="xs:positiveInteger" />
+                    <xs:element name="number" type="xs:positiveInteger" />
+                    <xs:element minOccurs="0" name="publisher" type="xs:string" />
+                    <xs:element minOccurs="0" name="impact-factor">
+                        <xs:complexType>
+                            <xs:all>
+                                <xs:element name="value" type="xs:positiveInteger" />
+                                <xs:element name="year" type="xs:positiveInteger" />
+                            </xs:all>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="articles" type="b:articlesType" />
+                </xs:sequence>
             
-			<xs:element name="year" type="xs:positiveInteger" />
-            
-			<xs:element name="volume" type="xs:positiveInteger" />
-            
-			<xs:element name="number" type="xs:positiveInteger" />
-            
-            <xs:choice>
-                <xs:element name="authors" type="authorsType" />
-                <xs:element name="editors" type="editorsType"/>
-            </xs:choice>
-            
-			<xs:element minOccurs="0" name="publisher" type="xs:string" />
-            
-			<xs:element minOccurs="0" name="impact-factor">
-                <xs:complexType>
-                    <xs:all>
-                        <xs:element name="value" type="xs:positiveInteger" />
-                        <xs:element name="year" type="xs:positiveInteger" />
-                    </xs:all>
-                </xs:complexType>
-            </xs:element>
-            
-            <xs:element name="articles" type="articlesType" />
-            
-		</xs:sequence>
-        <xs:attribute name="title" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
 	</xs:complexType>
     
+    <!-- LEISURE TYPES -->
+    
 	<xs:complexType name="leisureBook">
-		<xs:all>
+        <xs:complexContent>
+            <xs:extension base="b:basic_paper_type">
             
-			<xs:element name="year" type="xs:positiveInteger" />
-        
-            <xs:element name="authors" type="authorsType" />
-            
-			<xs:element name="publisher" type="xs:string" />
-            
-			<xs:element minOccurs="0" name="number-page" type="xs:positiveInteger" />
-            
-			<xs:element minOccurs="0" name="edition" type="xs:string" />
-		</xs:all>
-        <xs:attribute name="type" type="xs:string" fixed="leisure"/>
-        <xs:attribute name="title" type="xs:string" use="required" />
-        <xs:attribute name="genre" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:pattern value="(thriller|sci/fi|romance|horror|literature)"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
+                <!-- ELEMENT -->
+                <xs:sequence>
+                    <xs:element name="year" type="xs:positiveInteger" />
+                    <xs:element name="authors" type="b:authorsType" >
+                        <xs:unique name="author_unique_leisureBook">
+                            <xs:selector xpath="author" />
+                            <xs:field xpath="." />
+                        </xs:unique>
+                    </xs:element>
+                    <xs:element name="publisher" type="xs:string" />
+                    <xs:element minOccurs="0" name="number-page" type="xs:positiveInteger" />
+                    <xs:element minOccurs="0" name="edition" type="xs:string" />
+                </xs:sequence>
+                
+                <!-- ATTRIBUT -->
+                <xs:attribute name="type" type="xs:string" fixed="leisure"/>
+                <xs:attribute name="genre" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="(thriller|sci/fi|romance|horror|literature)"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                
+            </xs:extension>
+        </xs:complexContent>
 	</xs:complexType>
     
 	<xs:complexType name="leisurePeriodical">
-		<xs:all>
-			<xs:element name="price" type="xs:positiveInteger" />
-            
-			<xs:element name="publisher" type="xs:string" />
-		</xs:all>
-        <xs:attribute name="title" type="xs:string" use="required" />
+        <xs:complexContent>
+            <xs:extension base="b:basic_paper_type">
+                <!-- ELEMENT -->
+                <xs:sequence>
+                    <xs:element name="publisher" type="xs:string" />
+                    <xs:element name="price" type="xs:positiveInteger" />
+                </xs:sequence>
+                
+            </xs:extension>
+        </xs:complexContent>
+	</xs:complexType>
+    
+    
+    <!-- SCIENTIFIC DEPARTMENT TYPE -->
+    
+    <xs:complexType name="scientificJournals">
+        <!-- ELEMENT -->
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="journal" type="b:scientificJournal" />
+        </xs:sequence>
+	</xs:complexType>
+    
+    <xs:complexType name="scientificBooks">
+        <!-- ELEMENT -->
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="book" type="b:scientificBook" />
+        </xs:sequence>
+        <!-- ATTRIBUT -->
+        <xs:attribute name="type" type="xs:string" fixed="scientific"/>
 	</xs:complexType>
     
     <xs:complexType name="scientificType">
+        <!-- ELEMENT -->
         <xs:sequence>
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="book" type="scientificBook" />
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="journal" type="scientificJournal" />
+            <xs:element name="books" type="b:scientificBooks" >
+				<xs:unique name="ISBN_unique">
+					<xs:selector xpath="book" />
+					<xs:field xpath="@ISBN" />
+				</xs:unique>
+			</xs:element>
+            <xs:element name="journals" type="b:scientificJournals" />
         </xs:sequence>
+        <!-- ATTRIBUT -->
         <xs:attribute name="type" type="xs:string" fixed="scientific"/>
+	</xs:complexType>
+    
+    
+    <!-- LEISURE DEPARTMENT TYPE -->
+    
+    
+    <xs:complexType name="leisureBooks">
+        <!-- ELEMENT -->
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="book" type="b:leisureBook" />
+        </xs:sequence>
+        <!-- ATTRIBUT -->
+        <xs:attribute name="type" type="xs:string" fixed="leisure" />
+	</xs:complexType>
+    
+    <xs:complexType name="leisurePeriodicals">
+        <!-- ELEMENT -->
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="periodical" type="b:leisurePeriodical" />
+        </xs:sequence>
 	</xs:complexType>
     
     
     <xs:complexType name="leisureType">
+        <!-- ELEMENT -->
         <xs:sequence>
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="book" type="leisureBook" />
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="periodical" type="leisurePeriodical" />
+            <xs:element name="books" type="b:leisureBooks" />
+            <xs:element name="periodicals" type="b:leisurePeriodicals" />
         </xs:sequence>
+        <!-- ATTRIBUT -->
         <xs:attribute name="type" type="xs:string" fixed="leisure" />
 	</xs:complexType>
     
     
+    <!-- BOOKSHOP TYPE -->
+    
     <xs:element name="bookshop">
         <xs:complexType>
+            <!-- ELEMENT -->
             <xs:all>
-                <xs:element name="departmentScientific" type="scientificType" />
-                <xs:element name="departmentLeisure" type="leisureType" />
+                <xs:element name="departmentScientific" type="b:scientificType" />
+                <xs:element name="departmentLeisure" type="b:leisureType" />
             </xs:all>
         </xs:complexType>
     </xs:element>
