@@ -16,6 +16,6 @@ Devise a way to represent the above information (including the division in depar
 
 ## Results
 
-__XML model__: `src/model.xml`
-__XSD specifications__: `src/model.xsd`
-__XML example__: `src/test.xml`
+ - __XML model__: `src/model.xml`
+ - __XSD specifications__: `src/model.xsd`
+ - __XML example__: `src/test.xml`
